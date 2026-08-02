@@ -2,9 +2,9 @@ name: CI - Automated Tests
 
 on: 
   push:
-    branches: [pokemon-app-1.0]
+    branches: ["pokemon-app-1.0", "pokemonApp-1.0-bugfix"]
   pull_request:
-    branches: [pokemon-app-1.0]
+    branches: ["pokemon-app-1.0", "pokemonApp-1.0-bugfix"]
 
 jobs:
   test:
