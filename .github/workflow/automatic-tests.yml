@@ -1,0 +1,28 @@
+name: CI - Automated Tests
+
+on: 
+  push:
+    branch: [pokemonApp-1.0-feature]
+  pull_request:
+    branch: [pokemonApp-1.0-feature]
+
+jobs:
+  test:
+    name: Rodar Testes
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.jobs
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependências do npm
+        run: npm ci
+
+      - name: Rodar os testes Unitários
+        run: npm test -- --runInBand --no-cache
