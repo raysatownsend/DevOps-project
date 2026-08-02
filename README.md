@@ -85,7 +85,24 @@ You've successfully run and modified your React Native App. :partying_face:
 # Troubleshooting
 
 If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+# API endpoints used by the app
 
+This project consumes the public PokeAPI to list Pokémon and load details and move data.
+
+## Main endpoints
+
+- List of Pokémon:
+  - `https://pokeapi.co/api/v2/pokemon?limit={limit}&offset={offset}`
+- Pokémon details:
+  - `https://pokeapi.co/api/v2/pokemon/{id}/`
+- Move details:
+  - `https://pokeapi.co/api/v2/move/{id}/`
+
+## Notes
+
+- The list screen uses the paginated `pokemon` endpoint to load the initial set of Pokémon.
+- The detail screen fetches the Pokémon payload for the selected resource URL.
+- Move information is resolved from the `moves[].move.url` field returned by the Pokémon detail response.
 # Learn More
 
 To learn more about React Native, take a look at the following resources:
