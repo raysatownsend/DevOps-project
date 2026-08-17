@@ -1,0 +1,33 @@
+.bookForm {
+    align-items: center;
+    text-align: center;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    gap: 1rem;
+    padding: 0.5rem;
+    border: solid 1px #ccc;
+    background-color: #fffdff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bookForm input,
+.bookForm textarea {
+    width: 40%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.bookForm button {
+    padding: 0.5rem 1rem;
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 30%
+}
+.bookForm button:hover {
+    background-color: #155a8a;
+}
