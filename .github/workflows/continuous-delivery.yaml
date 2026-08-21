@@ -1,4 +1,4 @@
-name: CD - Continuous Delivery and Deploy
+name: CD - Continuous Delivery and Deploy to Github
 
 on: 
     workflow_run:
@@ -13,6 +13,38 @@ jobs:
         if: ${{ github.event.workflow_run.conclusion == 'success'}}
         runs-on: ubuntu-latest
 
-steps: 
-    - name: Checkout do Código
-      uses: actions/checkout@v4
+        steps: 
+            - name: Checkout do Código
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                node-version: '20'
+                cache: npm
+
+            - name: Install project dependencies
+              run: npm install
+
+            - name: Run tests
+              run: npm test
+
+            - name: Build Application Artifacts
+              run: npm run build
+
+            - name: Deploy to Server using SSH
+              uses: appleboy/ssh-action@v0.1.0
+              with:
+                host: ${{ secrets.HOST }}
+                username: ${{ secrets.USERNAME }}
+                key: ${{secrets.SSH_PRIVATE_KEY}}
+                port: 22
+                script: | 
+                    cd /Users/raysatownsend/Documents/PUCRS-Graduacao/Desenvolvimento-de-Sistemas-Front-End/projeto/bookstore
+                    git pull origin main
+                    cd frontend
+                    npm install
+                    cd ../
+                    cd backend
+                    npm install
+                    pm2 restart app   

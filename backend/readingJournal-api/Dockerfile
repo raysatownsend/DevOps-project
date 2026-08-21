@@ -1,17 +1,15 @@
-# Use a imagem oficial do Node.js como base
-FROM node:14
+FROM node:lts-alpine
 
-# Defina o diretório de trabalho dentro do container
 WORKDIR /app
 
-# Copie o código fonte para o diretório de trabalho
-COPY . /app
+COPY package*.json ./
+RUN npm ci --omit=dev
 
-# Instale as dependências do Node.js
-RUN npm install
+COPY . .
 
-# Expõe a porta 8081 para acesso externo
+ENV NODE_ENV=production
+ENV PORT=8081
+
 EXPOSE 8081
 
-# Inicie a aplicação com o comando "node app.js" quando o container for executado
 CMD ["node", "./bin/www"]

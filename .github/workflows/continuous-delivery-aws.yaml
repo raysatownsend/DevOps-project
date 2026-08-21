@@ -1,0 +1,49 @@
+name: CD - Continuous Delivery and Deploy to AWS
+
+on: 
+    workflow_run:
+        workflows: ["CI - Automated Tests"]
+        types: 
+            - completed
+    workflow_dispatch:
+
+jobs:
+  deploy:
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Instalar Ansible
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible
+          ansible-galaxy collection install -r ansible/requirements.yml
+
+      - name: Configurar chave SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' '${{ secrets.SSH_PRIVATE_KEY }}' > ~/.ssh/bookstore.pem
+          chmod 600 ~/.ssh/bookstore.pem
+
+      - name: Criar inventário da EC2
+        run: |
+          cat > ansible/inventory/hosts.ini <<EOF
+          [bookstore]
+          ec2 ansible_host=${{ secrets.EC2_HOST }} ansible_user=${{ secrets.EC2_USER }} ansible_ssh_private_key_file=$HOME/.ssh/bookstore.pem
+          EOF
+
+      - name: Executar Ansible
+        run: |
+          ansible-playbook \
+            -i ansible/inventory/hosts.ini \
+            ansible/site.yml
+
+      - name: Verificar aplicação
+        run: |
+          curl --fail --show-error --silent \
+            "http://${{ secrets.EC2_HOST }}/"

@@ -21,8 +21,24 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Instalar dependências do npm
+      - name: Instalar dependências do frontend
+        working-directory: frontend
         run: npm ci
 
-      - name: Rodar os testes Unitários
-        run: npm test
+      - name: Executar testes
+        working-directory: frontend
+        run: npm test -- --watchAll=false
+
+      - name: Gerar build do frontend
+        working-directory: frontend
+        run: npm run build
+
+      - name: Instalar dependências do backend
+        working-directory: backend/readingJournal-api
+        run: npm ci
+
+      - name: Validar Docker Compose
+        run: docker compose config
+
+      - name: Construir imagens Docker
+        run: docker compose build
