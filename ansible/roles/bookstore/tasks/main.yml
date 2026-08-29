@@ -23,8 +23,8 @@
 
 - name: Copy backend Docker build context
   ansible.posix.synchronize:
-    src: "{{ playbook_dir }}/../backend/readingJournal-api/"
-    dest: /opt/bookstore/backend/readingJournal-api/
+    src: "{{ playbook_dir }}/../backend/"
+    dest: /opt/bookstore/backend//
     delete: true
 
 - name: Build and start application containers
