@@ -1,6 +1,6 @@
 services:
   backend:
-    build: ./backend/readingJournal-api
+    build: ./backend
     expose:
       - "8081"
     healthcheck:
