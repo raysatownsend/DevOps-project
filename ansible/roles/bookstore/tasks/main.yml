@@ -1,0 +1,41 @@
+---
+- name: Create application directories
+  ansible.builtin.file:
+    path: /opt/bookstore
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0755"
+
+- name: Copy Docker Compose definition
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../docker-compose.yml"
+    dest: /opt/bookstore/docker-compose.yml
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0644"
+
+- name: Copy frontend Docker build context
+  ansible.posix.synchronize:
+    src: "{{ playbook_dir }}/../frontend/"
+    dest: /opt/bookstore/frontend/
+    delete: true
+
+- name: Copy backend Docker build context
+  ansible.posix.synchronize:
+    src: "{{ playbook_dir }}/../backend/readingJournal-api/"
+    dest: /opt/bookstore/backend/readingJournal-api/
+    delete: true
+
+- name: Build and start application containers
+  ansible.builtin.command:
+    cmd: docker compose up -d --build --remove-orphans
+    chdir: /opt/bookstore
+  register: compose_result
+  changed_when: compose_result.rc == 0
+
+- name: Check frontend availability
+  ansible.builtin.uri:
+    url: http://localhost/
+    status_code: 200
+    timeout: 10

@@ -1,0 +1,44 @@
+name: CI - Automated Tests
+
+on: 
+  push:
+    branches: ["bookstore-1.0-feature", "bookstore-1.0-bugfix"]
+  pull_request:
+    branches: ["bookstore-1.0-feature", "bookstore-1.0-bugfix"]
+
+jobs:
+  test:
+    name: Rodar Testes
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.jobs
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Instalar dependências do frontend
+        working-directory: frontend
+        run: npm ci
+
+      - name: Executar testes
+        working-directory: frontend
+        run: npm test --watchAll=false
+
+      - name: Gerar build do frontend
+        working-directory: frontend
+        run: npm run build
+
+      - name: Instalar dependências do backend
+        working-directory: backend/readingJournal-api
+        run: npm ci
+
+      - name: Validar Docker Compose
+        run: docker compose config
+
+      - name: Construir imagens Docker
+        run: docker compose build

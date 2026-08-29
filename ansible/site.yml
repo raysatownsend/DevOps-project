@@ -1,0 +1,7 @@
+---
+- name: Configure and deploy Bookstore on EC2
+  hosts: bookstore
+  become: true
+  roles:
+    - docker
+    - bookstore

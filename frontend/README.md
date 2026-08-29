@@ -22,7 +22,7 @@ npm start
 4. Em uma nova janela do VS Code (ou o que estiver usando) acesse a pasta do backEnd.
 
 ```
-cd /readingJournal-api
+cd backend/readingJournal-api
 ```
 
 5. Inicie o backend para poder rodar o projeto com os dados e fazer simulações.
