@@ -39,7 +39,7 @@ jobs:
           CI: false
 
       - name: Instalar dependências do backend
-        working-directory: backend/readingJournal-api
+        working-directory: backend
         run: npm ci
 
       - name: Validar Docker Compose
