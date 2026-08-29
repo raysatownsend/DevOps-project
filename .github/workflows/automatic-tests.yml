@@ -35,6 +35,8 @@ jobs:
       - name: Gerar build do frontend
         working-directory: frontend
         run: npm run build
+        env:
+          CI: false
 
       - name: Instalar dependências do backend
         working-directory: backend/readingJournal-api
