@@ -38,6 +38,8 @@ jobs:
           EOF
 
       - name: Executar Ansible
+        env: 
+          ANSIBLE_HOST_KEY_CHECKING: "False"
         run: |
           ansible-playbook \
             -i ansible/inventory/hosts.ini \
