@@ -1,7 +1,17 @@
 import axios from 'axios';
-import { getAllBooks } from '../../getAllBooks';
 
-jest.mock('axios');
+jest.mock('axios', () => {
+  const mockInstance = {
+    get: jest.fn(),
+  };
+  return {
+    create: jest.fn(() => mockInstance),
+  };
+});
+
+const mockedApi = axios.create();
+
+import { getAllBooks } from '../../getAllBooks';
 
 test('get all books from the list', async () => {
   const mockBooks = [
@@ -9,7 +19,7 @@ test('get all books from the list', async () => {
     { id: 2, title: 'Test Book 2', author: 'Author 2', genre: 'Genre 2' },
   ];
 
-  axios.get.mockResolvedValueOnce({ data: mockBooks });
+  mockedApi.get.mockResolvedValueOnce({ data: mockBooks });
 
   const books = await getAllBooks();
 
