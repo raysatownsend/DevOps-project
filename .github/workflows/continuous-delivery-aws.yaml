@@ -5,7 +5,8 @@ on:
         workflows: ["CI - Automated Tests"]
         types: 
             - completed
-    workflow_dispatch:
+    push: 
+        branches: ["bookstore-1.0-feature"]
 
 jobs:
   deploy:
