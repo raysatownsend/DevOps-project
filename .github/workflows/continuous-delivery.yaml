@@ -28,12 +28,24 @@ jobs:
                   frontend/package-lock.json
                   backend/package-lock.json
 
-            - name: Install project dependencies
-              run: npm install
+            - name: Instalar dependências do frontend
+              working-directory: frontend
+              run: npm ci
 
-            - name: Run tests
-              run: npm test
+            - name: Executar testes
+              working-directory: frontend
+              run: npm test --watchAll=false
 
+            - name: Gerar build do frontend
+              working-directory: frontend
+              run: npm run build
+              env:
+                CI: false
+
+            - name: Instalar dependências do backend
+              working-directory: backend
+              run: npm ci
+              
             - name: Build Application Artifacts
               run: npm run build
 
