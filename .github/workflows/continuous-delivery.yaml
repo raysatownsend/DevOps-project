@@ -46,6 +46,12 @@ jobs:
               working-directory: backend
               run: npm ci
               
+            - name: Gerar build do frontend
+              working-directory: frontend
+              run: npm run build
+              env:
+                CI: false
+
             - name: Build Application Artifacts
               run: npm run build
 
