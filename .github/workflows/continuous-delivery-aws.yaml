@@ -28,14 +28,14 @@ jobs:
       - name: Configurar chave SSH
         run: |
           mkdir -p ~/.ssh
-          printf '%s\n' '${{ secrets.SSH_PRIVATE_KEY }}' > ~/.ssh/bookstore.pem
-          chmod 600 ~/.ssh/bookstore.pem
+          printf '%s\n' '${{ secrets.SSH_PRIVATE_KEY }}' > ~/.ssh/devOps-test.pem
+          chmod 600 ~/.ssh/devOps-test.pem
 
       - name: Criar inventário da EC2
         run: |
           cat > ansible/inventory/hosts.ini <<EOF
           [bookstore]
-          ec2 ansible_host=${{ secrets.EC2_HOST }} ansible_user=${{ secrets.EC2_USER }} ansible_ssh_private_key_file=$HOME/.ssh/bookstore.pem
+          ec2 ansible_host=${{ secrets.EC2_HOST }} ansible_user=${{ secrets.EC2_USER }} ansible_ssh_private_key_file=$HOME/.ssh/devOps-test.pem
           EOF
 
       - name: Executar Ansible
