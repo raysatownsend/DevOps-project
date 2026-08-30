@@ -45,7 +45,13 @@ jobs:
             - name: Instalar dependências do backend
               working-directory: backend
               run: npm ci
-              
+
+            - name: Gerar build do backend
+              working-directory: backend
+              run: npm run build
+              env:
+                CI: false
+
             - name: Build Application Artifacts
               run: npm run build
 
